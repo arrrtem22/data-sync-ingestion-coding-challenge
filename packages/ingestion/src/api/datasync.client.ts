@@ -28,7 +28,9 @@ export class DataSyncClient {
       retries: 5,
       retryDelay: axiosRetry.exponentialDelay,
       retryCondition: (error) => {
-        return axiosRetry.isNetworkOrIdempotentRequestError(error) || error.response?.status === 503 || error.response?.status === 502;
+        return axiosRetry.isNetworkOrIdempotentRequestError(error) || 
+               error.response?.status === 502 || 
+               error.response?.status === 503;
       },
     });
   }

@@ -10,12 +10,13 @@ async function main() {
     const runner = new IngestionRunner();
     await runner.run();
     
+    logger.info('Ingestion finished. Holding process open.');
+    await new Promise(() => {}); // Block forever
   } catch (err) {
     logger.error('Fatal error:', err);
     process.exit(1);
-  } finally {
-    await closeDb();
   }
+  // Do not close DB in finally block to keep container alive
 }
 
 main();
