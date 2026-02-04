@@ -7,7 +7,7 @@ import { z } from 'zod';
 const ResponseSchema = z.object({
   data: z.array(EventSchema),
   pagination: z.object({
-    hasMore: z.boolean(),
+    hasMore: z.boolean().optional(),
     nextCursor: z.string().nullable().optional(),
   }),
 });
@@ -33,7 +33,7 @@ export class DataSyncClient {
     });
   }
 
-  async getEvents(limit: number, cursor?: string): Promise<{ events: Event[]; nextCursor?: string; hasMore: boolean }> {
+  async getEvents(limit: number, cursor?: string): Promise<{ events: Event[]; nextCursor?: string }> {
     try {
       const params: any = { limit };
       if (cursor) params.cursor = cursor;
@@ -45,7 +45,6 @@ export class DataSyncClient {
       return {
         events: parsed.data,
         nextCursor: parsed.pagination.nextCursor || undefined,
-        hasMore: parsed.pagination.hasMore,
       };
     } catch (error: any) {
       if (error.response?.status === 429) {

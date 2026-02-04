@@ -1,3 +1,4 @@
+import { Pool, PoolClient } from 'pg';
 import { pool } from '../connection';
 
 export class CheckpointsRepository {
@@ -9,8 +10,8 @@ export class CheckpointsRepository {
     return res.rows[0]?.cursor || null;
   }
 
-  async saveCheckpoint(serviceId: string, cursor: string, batchCount: number): Promise<void> {
-    await pool.query(
+  async saveCheckpoint(serviceId: string, cursor: string, batchCount: number, client: PoolClient | Pool = pool): Promise<void> {
+    await client.query(
       `INSERT INTO ingestion_checkpoints (service_id, cursor, total_events_ingested)
        VALUES ($1, $2, $3)
        ON CONFLICT (service_id) DO UPDATE SET
