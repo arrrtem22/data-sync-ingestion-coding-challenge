@@ -131,7 +131,7 @@ The current implementation prioritizes **reliability over raw speed**.
 
 This solution was accelerated using the following AI tools and Agents:
 
-- **Trae AI**: Primary IDE assistant for code generation, refactoring, and context management.
+- **Trae AI Gemini 3 Pro**: Primary IDE assistant for code generation, refactoring, and context management.
 - **ChatGPT**: Used for prompt engineering and high-level architectural reasoning.
 - **Claude Code**: (Mentioned as a preferred tool for future iterations).
 
