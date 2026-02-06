@@ -10,6 +10,24 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ingestion
+    command:
+      - "postgres"
+      - "-c"
+      - "fsync=off"
+      - "-c"
+      - "synchronous_commit=off"
+      - "-c"
+      - "full_page_writes=off"
+      - "-c"
+      - "shared_buffers=256MB"
+      - "-c"
+      - "work_mem=50MB"
+      - "-c"
+      - "maintenance_work_mem=128MB"
+      - "-c"
+      - "checkpoint_completion_target=0.9"
+      - "-c"
+      - "max_wal_size=2GB"
     ports:
       - "5434:5432"
     volumes:
@@ -27,18 +45,23 @@ services:
     container_name: assignment-ingestion
     environment:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/ingestion
-      API_BASE_URL: http://datasync-dev-alb-101078500.us-east-1.elb.amazonaws.com/api/v1
-      TARGET_API_KEY: ds_20197e52a5ed04cc261069792f0cc3b6
-      BATCH_SIZE: 5000
-      RATE_LIMIT_DELAY_MS: 2200
+      API_BASE_URL: ${API_BASE_URL:-http://datasync-dev-alb-101078500.us-east-1.elb.amazonaws.com/api/v1}
+      TARGET_API_KEY: ${TARGET_API_KEY}
+      WORKER_CONCURRENCY: ${WORKER_CONCURRENCY:-10}
+      BATCH_SIZE: ${BATCH_SIZE:-1000}
+      RATE_LIMIT_BUFFER: ${RATE_LIMIT_BUFFER:-5}
+      CURSOR_REFRESH_THRESHOLD: ${CURSOR_REFRESH_THRESHOLD:-60}
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      - ingestion_state:/data
     networks:
       - assignment-network
 
 volumes:
   assignment_postgres_data:
+  ingestion_state:
 
 networks:
   assignment-network:

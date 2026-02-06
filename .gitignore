@@ -1,1 +1,8 @@
 .DS_Store
+node_modules/
+dist/
+*.log
+.env
+.env.local
+event_ids.txt
+packages/ingestion/ingestion.state

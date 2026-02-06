@@ -5,9 +5,12 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-COPY tsconfig.json ./
-COPY src ./src
+# Install postgresql-client for psql COPY support
+RUN apk add --no-cache postgresql-client
 
-RUN npm run build
+COPY . .
+
+# Create data directory for state file
+RUN mkdir -p /data
 
 CMD ["npm", "start"]

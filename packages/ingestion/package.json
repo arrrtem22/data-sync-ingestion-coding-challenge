@@ -1,23 +1,26 @@
 {
-  "name": "ingestion-service",
+  "name": "datasync-ingestion",
   "version": "1.0.0",
-  "main": "src/index.ts",
+  "type": "module",
   "scripts": {
-    "start": "ts-node src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "start": "sh src/scripts/start.sh",
+    "export-ids": "tsc && node dist/export-ids.js",
+    "test": "vitest run"
   },
   "dependencies": {
-    "axios": "^1.6.0",
-    "axios-retry": "^4.0.0",
-    "dotenv": "^16.0.0",
-    "pg": "^8.11.0",
-    "winston": "^3.10.0",
-    "zod": "^3.22.0"
+    "dotenv": "^17.2.3",
+    "node-fetch": "^3.3.2",
+    "pg": "^8.11.3",
+    "pg-copy-streams": "^7.0.0",
+    "redis": "^5.10.0"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "@types/pg": "^8.0.0",
-    "ts-node": "^10.9.0",
-    "typescript": "^5.0.0"
+    "@types/node": "^20.19.32",
+    "@types/pg": "^8.10.9",
+    "@types/pg-copy-streams": "^1.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "vitest": "^4.0.18"
   }
 }
